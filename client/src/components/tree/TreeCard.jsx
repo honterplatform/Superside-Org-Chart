@@ -19,7 +19,7 @@ export default React.memo(function TreeCard({
   const isFreelancer = node.type === 'freelancer';
   const isPlanned = node.type === 'planned_role';
 
-  const bg = isPlanned ? 'white' : isManager ? '#0A211F' : '#FFFFFF';
+  const bg = isPlanned ? 'white' : isManager ? '#3B7567' : '#FFFFFF';
   const borderStyle = isConnectSource || isDropTarget
     ? '2px solid var(--accent)'
     : isFreelancer ? '2px solid var(--border-freelancer)'
@@ -36,7 +36,7 @@ export default React.memo(function TreeCard({
       style={{
         position: 'absolute',
         left: node.x, top: node.y,
-        width: CARD_W, height: CARD_H,
+        width: CARD_W, height: assignments.length > 0 ? CARD_H : CARD_H - 50,
         background: isDropTarget ? '#E8E0F0' : bg,
         border: borderStyle,
         borderRadius: 12,
@@ -96,7 +96,7 @@ export default React.memo(function TreeCard({
 
       {/* Name */}
       <div style={{
-        fontWeight: 700, fontSize: 13, textAlign: 'center',
+        fontWeight: 500, fontSize: 13, textAlign: 'center',
         color: isManager ? '#F9FBF7' : 'var(--text-primary)',
         lineHeight: 1.2, maxWidth: '100%',
         overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
@@ -106,7 +106,7 @@ export default React.memo(function TreeCard({
 
       {/* Region */}
       <div style={{
-        fontSize: 10, color: isManager ? 'rgba(249,251,247,0.6)' : 'var(--text-secondary)', marginTop: 1,
+        fontSize: 8, color: isManager ? 'rgba(249,251,247,0.6)' : 'var(--text-secondary)', marginTop: 1,
         textAlign: 'center'
       }}>
         {node.region}
@@ -159,20 +159,6 @@ export default React.memo(function TreeCard({
         <div style={{ position: 'absolute', top: 8, right: 28, fontSize: 10, color: '#DAA520' }}>📝</div>
       )}
 
-      {/* Collapse toggle */}
-      {hasChildren && (
-        <button onClick={(e) => { e.stopPropagation(); onToggleCollapse(); }}
-          style={{
-            position: 'absolute', bottom: -12, left: '50%', transform: 'translateX(-50%)',
-            width: 22, height: 22, borderRadius: '50%',
-            background: 'white', border: '1px solid var(--border)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 11, cursor: 'pointer', zIndex: 2,
-            color: 'var(--text-secondary)', boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-          }}>
-          {collapsed ? '+' : '−'}
-        </button>
-      )}
     </div>
   );
 });

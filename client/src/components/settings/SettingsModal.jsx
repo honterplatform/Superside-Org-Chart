@@ -27,7 +27,7 @@ export default function SettingsModal() {
         {tabs.map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)}
             style={{
-              padding: '6px 14px', borderRadius: 'var(--radius-sm)',
+              padding: '6px 14px', borderRadius: 9999,
               fontSize: 13, fontWeight: 500, cursor: 'pointer',
               background: activeTab === tab.id ? 'var(--accent)' : 'transparent',
               color: activeTab === tab.id ? 'white' : 'var(--text-secondary)',
@@ -38,7 +38,7 @@ export default function SettingsModal() {
         ))}
         <div style={{ flex: 1 }} />
         <button onClick={logout} style={{
-          padding: '6px 14px', borderRadius: 'var(--radius-sm)',
+          padding: '6px 14px', borderRadius: 9999,
           fontSize: 13, border: '1px solid var(--red)', color: 'var(--red)', cursor: 'pointer'
         }}>
           Sign Out
@@ -81,9 +81,9 @@ function ActivityLogView() {
       ))}
       <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'center' }}>
         <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
-          style={{ padding: '4px 10px', borderRadius: 4, border: '1px solid var(--border)', fontSize: 12, cursor: 'pointer' }}>Prev</button>
+          style={{ padding: '4px 10px', borderRadius: 9999, border: '1px solid var(--border)', fontSize: 12, cursor: 'pointer' }}>Prev</button>
         <button onClick={() => setPage(p => p + 1)}
-          style={{ padding: '4px 10px', borderRadius: 4, border: '1px solid var(--border)', fontSize: 12, cursor: 'pointer' }}>Next</button>
+          style={{ padding: '4px 10px', borderRadius: 9999, border: '1px solid var(--border)', fontSize: 12, cursor: 'pointer' }}>Next</button>
       </div>
     </div>
   );

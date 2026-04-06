@@ -96,7 +96,7 @@ export default function TreeLines({ edges, nodePositions, personMap }) {
           return (
             <path key={edge.id} d={d}
               fill="none" stroke={STROKE} strokeWidth={STROKE_W}
-              markerEnd="url(#arrow)"
+              
             />
           );
         }
@@ -129,7 +129,7 @@ export default function TreeLines({ edges, nodePositions, personMap }) {
               x1={edge.cx} y1={edge.midY}
               x2={edge.cx} y2={edge.childTop}
               stroke={STROKE} strokeWidth={STROKE_W}
-              markerEnd="url(#arrow)"
+              
             />
           );
         }
@@ -146,7 +146,7 @@ export default function TreeLines({ edges, nodePositions, personMap }) {
           <path key={edge.id} d={d}
             fill="none" stroke="#bbb" strokeWidth={1}
             strokeDasharray="6,4"
-            markerEnd="url(#arrow-light)"
+            
           />
         );
       })}

@@ -16,8 +16,8 @@
   --text-light: #999;
   --border: #e0ddd8;
   --border-light: #eee;
-  --accent: #6B5CE7;
-  --accent-light: #E8E0F0;
+  --accent: #D8FF85;
+  --accent-light: #f0ffd6;
   --green: #4CAF50;
   --orange: #FF9800;
   --red: #E74C3C;
@@ -62,8 +62,20 @@ input, select, textarea {
   transition: border-color 0.2s;
   background: white;
 }
+select {
+  padding-right: 28px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
 input:focus, select:focus, textarea:focus {
   border-color: var(--accent);
+}
+
+/* Search bar placeholder */
+input[type="text"]::placeholder {
+  color: rgba(249,251,247,0.5);
 }
 
 /* Scrollbar */

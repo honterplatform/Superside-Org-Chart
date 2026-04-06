@@ -8,11 +8,10 @@ import OrgTree from './components/tree/OrgTree';
 import PeopleDirectory from './components/directory/PeopleDirectory';
 import AccountsGrid from './components/accounts/AccountsGrid';
 import PersonDetail from './components/detail/PersonDetail';
-import ChatDrawer from './components/chat/ChatDrawer';
 import SettingsModal from './components/settings/SettingsModal';
 
 export default function App() {
-  const { authenticated, view, selectedPersonId, chatOpen, settingsOpen, loading } = useApp();
+  const { authenticated, view, selectedPersonId, settingsOpen, loading } = useApp();
 
   if (!authenticated) return <LoginScreen />;
 
@@ -39,7 +38,6 @@ export default function App() {
         {view === 'accounts' && <AccountsGrid />}
 
         {selectedPersonId && <PersonDetail />}
-        {chatOpen && <ChatDrawer />}
       </div>
       <MobileTabBar />
       {settingsOpen && <SettingsModal />}

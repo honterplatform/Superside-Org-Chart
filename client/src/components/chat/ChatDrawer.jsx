@@ -139,7 +139,7 @@ const styles = {
   },
   title: { fontFamily: 'var(--font-heading)', fontSize: 16, fontWeight: 600 },
   clearBtn: {
-    padding: '4px 10px', borderRadius: 'var(--radius-sm)',
+    padding: '4px 10px', borderRadius: 9999,
     border: '1px solid var(--border)', fontSize: 12, cursor: 'pointer'
   },
   closeBtn: { fontSize: 22, color: 'var(--text-secondary)', cursor: 'pointer' },
@@ -154,7 +154,7 @@ const styles = {
   },
   sendBtn: {
     width: 40, height: 40, borderRadius: 'var(--radius-md)',
-    background: 'var(--accent)', color: 'white', fontSize: 18,
+    background: 'var(--accent)', color: '#0A211F', fontSize: 18,
     fontWeight: 700, cursor: 'pointer', display: 'flex',
     alignItems: 'center', justifyContent: 'center'
   }

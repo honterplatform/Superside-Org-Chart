@@ -30,7 +30,7 @@ export default function MiniMap({ nodes, treeWidth, treeHeight, zoom, pan, setPa
     <div ref={mapRef} onClick={handleClick} style={{
       position: 'absolute', bottom: 16, right: 16,
       width: MINIMAP_W, height: MINIMAP_H,
-      background: 'rgba(255,255,255,0.9)', borderRadius: 'var(--radius-sm)',
+      background: 'rgba(255,255,255,0.9)', borderRadius: 9999,
       border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)',
       overflow: 'hidden', cursor: 'crosshair', zIndex: 10
     }}>

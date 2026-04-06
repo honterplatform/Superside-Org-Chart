@@ -110,12 +110,16 @@ export default function AssignmentEditor({ personId, assignments, onUpdate }) {
 const styles = {
   item: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '8px 10px', borderRadius: 'var(--radius-sm)',
+    padding: '8px 10px', borderRadius: 9999,
     background: 'var(--bg)', marginBottom: 6, gap: 8
   },
   miniSelect: {
-    padding: '2px 6px', borderRadius: 4, border: '1px solid var(--border)',
-    fontSize: 11, background: 'white'
+    padding: '2px 22px 2px 6px', borderRadius: 9999, border: '1px solid var(--border)',
+    fontSize: 11, background: 'white',
+    appearance: 'none',
+    backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 5px center'
   },
   removeBtn: {
     width: 24, height: 24, borderRadius: '50%', display: 'flex',
@@ -127,16 +131,16 @@ const styles = {
     display: 'flex', gap: 6, alignItems: 'center', marginTop: 8, flexWrap: 'wrap'
   },
   addBtn: {
-    marginTop: 8, padding: '6px 12px', borderRadius: 'var(--radius-sm)',
-    border: '1px dashed var(--border)', color: 'var(--accent)',
+    marginTop: 8, padding: '6px 12px', borderRadius: 9999,
+    border: '1px dashed var(--border)', color: '#1a1a1a',
     fontSize: 12, fontWeight: 500, cursor: 'pointer', width: '100%'
   },
   addConfirmBtn: {
-    padding: '4px 10px', borderRadius: 4, background: 'var(--accent)',
+    padding: '4px 10px', borderRadius: 9999, background: 'var(--accent)',
     color: 'white', fontSize: 11, fontWeight: 600, cursor: 'pointer'
   },
   cancelBtn: {
-    padding: '4px 8px', borderRadius: 4, border: '1px solid var(--border)',
+    padding: '4px 8px', borderRadius: 9999, border: '1px solid var(--border)',
     fontSize: 13, cursor: 'pointer'
   }
 };

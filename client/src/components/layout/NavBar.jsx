@@ -4,7 +4,7 @@ import SearchBar from '../shared/SearchBar';
 import api from '../../services/api';
 
 export default function NavBar() {
-  const { view, setView, setChatOpen, setSettingsOpen, setSelectedPersonId, people } = useApp();
+  const { view, setView, setSettingsOpen, setSelectedPersonId, people } = useApp();
   const [showAddModal, setShowAddModal] = useState(false);
   const [newPerson, setNewPerson] = useState({ name: '', title: '', seniority: '3a', region: 'AMERICAS', role: 'ic' });
 
@@ -30,25 +30,14 @@ export default function NavBar() {
     <>
       <nav style={styles.nav}>
         <div style={styles.left}>
+          <img src="/logo.svg" alt="Logo" style={{ height: 24 }} />
           <span style={styles.logo}>Spark Studio</span>
-          <div style={styles.tabs} className="hide-mobile">
-            {tabs.map(tab => (
-              <button key={tab.id} onClick={() => setView(tab.id)}
-                className={tab.hideOnMobile ? 'hide-mobile' : ''}
-                style={{ ...styles.tab, ...(view === tab.id ? styles.tabActive : {}) }}>
-                {tab.label}
-              </button>
-            ))}
-          </div>
+        </div>
+        <div style={styles.center}>
+          <SearchBar />
         </div>
         <div style={styles.right}>
-          <SearchBar compact />
           <button onClick={() => setShowAddModal(true)} style={styles.addBtn}>+ Add</button>
-          <button onClick={() => setChatOpen(prev => !prev)} style={styles.iconBtn} title="AI Chat">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-          </button>
           <button onClick={() => setSettingsOpen(true)} style={styles.iconBtn} title="Settings">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
@@ -99,25 +88,26 @@ export default function NavBar() {
 const styles = {
   nav: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '0 20px', height: 52, background: 'var(--bg-dark)', color: 'white',
-    flexShrink: 0, zIndex: 50
+    padding: '0 20px', height: 52, background: '#0A211F', color: 'white',
+    flexShrink: 0, zIndex: 50, position: 'relative'
   },
   left: { display: 'flex', alignItems: 'center', gap: 24 },
+  center: { position: 'absolute', left: '50%', transform: 'translateX(-50%)' },
   right: { display: 'flex', alignItems: 'center', gap: 8 },
   logo: { fontFamily: 'var(--font-heading)', fontSize: 16, fontWeight: 700 },
   tabs: { display: 'flex', gap: 2 },
   tab: {
-    padding: '6px 14px', borderRadius: 'var(--radius-sm)',
+    padding: '6px 14px', borderRadius: 9999,
     color: 'rgba(255,255,255,0.6)', fontSize: 13, fontWeight: 500,
     transition: 'all 0.15s'
   },
   tabActive: { color: 'white', background: 'rgba(255,255,255,0.15)' },
   addBtn: {
-    padding: '6px 14px', borderRadius: 'var(--radius-sm)',
-    background: 'var(--accent)', color: 'white', fontSize: 13, fontWeight: 600
+    padding: '6px 14px', borderRadius: 9999,
+    background: 'var(--accent)', color: '#0A211F', fontSize: 13, fontWeight: 600
   },
   iconBtn: {
-    padding: 8, borderRadius: 'var(--radius-sm)', color: 'rgba(255,255,255,0.7)',
+    padding: 8, borderRadius: 9999, color: 'rgba(255,255,255,0.7)',
     display: 'flex', alignItems: 'center'
   },
   modalOverlay: {
@@ -129,11 +119,11 @@ const styles = {
     maxWidth: 420, width: '95%', color: 'var(--text-primary)'
   },
   cancelBtn: {
-    padding: '8px 16px', borderRadius: 'var(--radius-sm)',
+    padding: '8px 16px', borderRadius: 9999,
     border: '1px solid var(--border)', cursor: 'pointer'
   },
   saveBtn: {
-    padding: '8px 16px', borderRadius: 'var(--radius-sm)',
-    background: 'var(--accent)', color: 'white', fontWeight: 600, cursor: 'pointer'
+    padding: '8px 16px', borderRadius: 9999,
+    background: 'var(--accent)', color: '#0A211F', fontWeight: 600, cursor: 'pointer'
   }
 };

@@ -9,7 +9,9 @@ import MiniMap from './MiniMap';
 import api from '../../services/api';
 
 export default function OrgTree() {
-  const { people, setPeople, assignments, accounts, filters, setSelectedPersonId, fetchAll } = useApp();
+  const { people, setPeople, assignments, accounts, filters, setSelectedPersonId, fetchAll, locked } = useApp();
+  const lockedRef = useRef(locked);
+  lockedRef.current = locked;
   const [zoom, setZoom] = useState(0.3);
   const [pan, setPan] = useState({ x: 20, y: 20 });
   const [collapsed, setCollapsed] = useState(new Set());
@@ -95,20 +97,35 @@ export default function OrgTree() {
     return { nodes: allNodes, edges: allEdges, width: maxX + 100, height: maxY + 100 };
   }, [roots, collapsed]);
 
+  // Check if a person has any assignments
+  const personHasAssignments = useMemo(() => {
+    const map = {};
+    for (const a of assignments) {
+      const pid = toId(a.personId?._id || a.personId);
+      map[pid] = true;
+    }
+    return map;
+  }, [assignments]);
+
+  const getCardHeight = (nodeId) => {
+    return personHasAssignments[nodeId] ? CARD_H : CARD_H - 50;
+  };
+
   const treeData = useMemo(() => {
     const nodes = autoLayout.nodes.map(node => {
       if (node.virtual) return node;
       const id = toId(node._id);
       const person = personMap[id];
+      const h = getCardHeight(id);
       if (localOffsets[id]) {
         const x = localOffsets[id].x, y = localOffsets[id].y;
-        return { ...node, x, y, centerX: x + CARD_W / 2, centerY: y + CARD_H / 2 };
+        return { ...node, x, y, h, centerX: x + CARD_W / 2, centerY: y + h / 2 };
       }
       if (person && person.posX != null && person.posY != null) {
         const x = person.posX, y = person.posY;
-        return { ...node, x, y, centerX: x + CARD_W / 2, centerY: y + CARD_H / 2 };
+        return { ...node, x, y, h, centerX: x + CARD_W / 2, centerY: y + h / 2 };
       }
-      return node;
+      return { ...node, h };
     });
 
     const nodeMap = {};
@@ -131,7 +148,7 @@ export default function OrgTree() {
       const parent = nodeMap[parentId];
       if (!parent) continue;
       const parentCx = parent.x + CARD_W / 2;
-      const parentBot = parent.y + CARD_H;
+      const parentBot = parent.y + (parent.h || CARD_H);
 
       const childCenters = children.map(c => ({
         id: toId(c._id),
@@ -270,6 +287,7 @@ export default function OrgTree() {
 
     const cardEl = e.target.closest('[data-card]');
     if (cardEl) {
+      if (lockedRef.current) return; // Don't allow dragging when locked
       const nodeId = cardEl.getAttribute('data-node-id');
       if (!nodeId) return;
       const node = nodePositions[nodeId];
@@ -462,32 +480,12 @@ export default function OrgTree() {
         ))}
       </div>
 
-      <MiniMap nodes={treeData.nodes} treeWidth={treeData.width} treeHeight={treeData.height}
-        zoom={zoom} pan={pan} setPan={setPan} containerRef={containerRef} />
 
       {/* Controls */}
       <div style={styles.controls}>
         <button onClick={() => setZoom(z => Math.min(2, z + 0.1))} style={styles.zoomBtn}>+</button>
         <span style={styles.zoomLabel}>{Math.round(zoom * 100)}%</span>
         <button onClick={() => setZoom(z => Math.max(0.1, z - 0.1))} style={styles.zoomBtn}>−</button>
-        <button onClick={() => { setHasFitted(false); }} style={styles.zoomBtn} title="Fit to view">⌂</button>
-        <div style={styles.divider} />
-        <button onClick={handleResetLayout} style={styles.zoomBtn} title="Auto-layout">⟳</button>
-        <div style={styles.divider} />
-        <button
-          onClick={() => { setConnectMode(m => !m); setConnectSource(null); setConnectMouse(null); }}
-          style={{
-            ...styles.connectBtn,
-            background: connectMode ? 'var(--accent)' : 'transparent',
-            color: connectMode ? 'white' : 'var(--text-primary)'
-          }}
-          title="Connect mode — click two cards to link them"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><line x1="8" y1="12" x2="16" y2="12"/>
-          </svg>
-          <span style={{ marginLeft: 4, fontSize: 12, fontWeight: 600 }}>Connect</span>
-        </button>
       </div>
 
       {/* Connect mode banner */}
@@ -531,7 +529,7 @@ export default function OrgTree() {
                 </div>
               </button>
             </div>
-            <button onClick={() => setConnectConfirm(null)} style={{ marginTop: 12, width: '100%', padding: '8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', cursor: 'pointer', fontSize: 13 }}>
+            <button onClick={() => setConnectConfirm(null)} style={{ marginTop: 12, width: '100%', padding: '8px', borderRadius: 9999, border: '1px solid var(--border)', cursor: 'pointer', fontSize: 13 }}>
               Cancel
             </button>
           </div>
@@ -545,18 +543,18 @@ const styles = {
   container: {
     width: '100%', height: '100%', overflow: 'hidden',
     position: 'relative', background: 'var(--bg)',
-    backgroundImage: 'radial-gradient(circle, #d0d0d0 1px, transparent 1px)',
+    backgroundImage: 'radial-gradient(circle, #e0e0e0 0.8px, transparent 0.8px)',
     backgroundSize: '20px 20px',
     userSelect: 'none'
   },
   controls: {
-    position: 'absolute', bottom: 16, left: 16,
+    position: 'absolute', bottom: 16, right: 16,
     display: 'flex', alignItems: 'center', gap: 4,
     background: 'white', borderRadius: 'var(--radius-md)',
     padding: '4px 6px', boxShadow: 'var(--shadow-md)', zIndex: 10
   },
   zoomBtn: {
-    width: 32, height: 32, borderRadius: 'var(--radius-sm)',
+    width: 32, height: 32, borderRadius: 9999,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: 16, fontWeight: 600, cursor: 'pointer',
     color: 'var(--text-primary)'
@@ -565,18 +563,18 @@ const styles = {
   divider: { width: 1, height: 20, background: 'var(--border)', margin: '0 2px' },
   connectBtn: {
     display: 'flex', alignItems: 'center', padding: '4px 10px',
-    borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.15s'
+    borderRadius: 9999, cursor: 'pointer', transition: 'all 0.15s'
   },
   banner: {
     position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)',
-    background: 'var(--accent)', color: 'white', padding: '8px 20px',
+    background: 'var(--accent)', color: '#0A211F', padding: '8px 20px',
     borderRadius: 'var(--radius-md)', fontSize: 13, fontWeight: 500,
     boxShadow: 'var(--shadow-md)', zIndex: 10, whiteSpace: 'nowrap',
     display: 'flex', alignItems: 'center', gap: 4
   },
   bannerBtn: {
     background: 'rgba(255,255,255,0.25)', color: 'white', padding: '2px 10px',
-    borderRadius: 'var(--radius-sm)', fontSize: 12, cursor: 'pointer', fontWeight: 600
+    borderRadius: 9999, fontSize: 12, cursor: 'pointer', fontWeight: 600
   },
   modalOverlay: {
     position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)',

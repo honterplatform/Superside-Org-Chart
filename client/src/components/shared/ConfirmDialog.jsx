@@ -24,11 +24,11 @@ const styles = {
     maxWidth: 400, width: '90%', boxShadow: 'var(--shadow-lg)'
   },
   cancelBtn: {
-    padding: '8px 16px', borderRadius: 'var(--radius-sm)',
+    padding: '8px 16px', borderRadius: 9999,
     border: '1px solid var(--border)', background: 'white', cursor: 'pointer'
   },
   confirmBtn: {
-    padding: '8px 16px', borderRadius: 'var(--radius-sm)',
-    background: 'var(--accent)', color: 'white', cursor: 'pointer', fontWeight: 600
+    padding: '8px 16px', borderRadius: 9999,
+    background: 'var(--accent)', color: '#0A211F', cursor: 'pointer', fontWeight: 600
   }
 };

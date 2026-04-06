@@ -85,7 +85,7 @@ const styles = {
   tierLabel: { fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 4, textTransform: 'uppercase' },
   personRow: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '4px 8px', borderRadius: 'var(--radius-sm)', cursor: 'pointer',
+    padding: '4px 8px', borderRadius: 9999, cursor: 'pointer',
     fontSize: 13, marginBottom: 2
   }
 };

@@ -1,46 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import api from '../../services/api';
 
 export default function RoleManager() {
   const { roles, fetchAll } = useApp();
+  const [editing, setEditing] = useState(null);
+  const [adding, setAdding] = useState(false);
+  const [name, setName] = useState('');
 
-  const handleDelete = async (id) => {
-    await api.delete(`/api/roles/${id}`);
-    await fetchAll();
-  };
+  const startEdit = (r) => { setEditing(r._id); setAdding(false); setName(r.name); };
 
-  const handleAdd = async () => {
-    const name = prompt('Role name (e.g. CD, ACD, Strategy):');
-    if (!name) return;
+  const handleSave = async (id) => {
+    if (!name.trim()) return;
     const slug = name.toLowerCase().replace(/[\s\/]+/g, '_').replace(/[^a-z0-9_]/g, '');
-    await api.post('/api/roles', { name, slug, order: roles.length });
-    await fetchAll();
+    try {
+      if (id) await api.put(`/api/roles/${id}`, { name, slug });
+      else await api.post('/api/roles', { name, slug, order: roles.length });
+      await fetchAll(); setEditing(null); setAdding(false); setName('');
+    } catch { alert('Failed to save'); }
   };
+
+  const handleDelete = async (id) => { await api.delete(`/api/roles/${id}`); await fetchAll(); };
+  const cancel = () => { setEditing(null); setAdding(false); setName(''); };
+
+  const FormFields = ({ id }) => (
+    <div style={s.form}>
+      <input placeholder="Role name (e.g. CD, ACD, Strategy)" value={name} onChange={e => setName(e.target.value)} style={s.input} autoFocus />
+      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+        <button onClick={cancel} style={s.cancelBtn}>Cancel</button>
+        <button onClick={() => handleSave(id)} style={s.saveBtn}>Save</button>
+      </div>
+    </div>
+  );
 
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
         <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{roles.length} roles</span>
-        <button onClick={handleAdd} style={styles.addBtn}>+ Add Role</button>
+        {!adding && <button onClick={() => { setAdding(true); setEditing(null); setName(''); }} style={s.addBtn}>+ Add Role</button>}
       </div>
+      {adding && <FormFields id={null} />}
       {roles.map(r => (
-        <div key={r._id} style={styles.row}>
-          <span style={{ fontWeight: 500 }}>{r.name}</span>
-          <button onClick={() => handleDelete(r._id)} style={{ color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 16 }}>×</button>
+        <div key={r._id}>
+          {editing === r._id ? <FormFields id={r._id} /> : (
+            <div style={s.row}>
+              <span style={{ fontWeight: 500 }}>{r.name}</span>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <button onClick={() => startEdit(r)} style={s.editBtn}>Edit</button>
+                <button onClick={() => handleDelete(r._id)} style={{ color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 16 }}>×</button>
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-const styles = {
-  row: {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '8px 10px', borderBottom: '1px solid var(--border-light)', fontSize: 13
-  },
-  addBtn: {
-    padding: '6px 12px', borderRadius: 'var(--radius-sm)',
-    background: 'var(--accent)', color: 'white', fontSize: 12, fontWeight: 600, cursor: 'pointer'
-  }
+const s = {
+  row: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', borderBottom: '1px solid var(--border-light)', fontSize: 13 },
+  form: { padding: 12, marginBottom: 8, background: 'var(--bg)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 8 },
+  input: { flex: 1, padding: '6px 10px', borderRadius: 9999, border: '1px solid var(--border)', fontSize: 12 },
+  addBtn: { padding: '6px 12px', borderRadius: 9999, background: 'var(--accent)', color: '#0A211F', fontSize: 12, fontWeight: 600, cursor: 'pointer' },
+  editBtn: { padding: '2px 10px', borderRadius: 9999, border: '1px solid var(--border)', fontSize: 11, cursor: 'pointer', color: 'var(--text-secondary)' },
+  cancelBtn: { padding: '6px 14px', borderRadius: 9999, border: '1px solid var(--border)', fontSize: 12, cursor: 'pointer' },
+  saveBtn: { padding: '6px 14px', borderRadius: 9999, background: 'var(--accent)', color: '#0A211F', fontSize: 12, fontWeight: 600, cursor: 'pointer' }
 };

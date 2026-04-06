@@ -19,6 +19,7 @@ export function AppProvider({ children }) {
   const [seniorityLevels, setSeniorityLevels] = useState([]);
   const [roles, setRoles] = useState([]);
   const [filters, setFilters] = useState({});
+  const [locked, setLocked] = useState(true);
   const [selectedPersonId, setSelectedPersonId] = useState(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -109,7 +110,7 @@ export function AppProvider({ children }) {
     view, setView,
     people, setPeople, accounts, setAccounts, assignments, setAssignments,
     capabilities, setCapabilities, regions, setRegions, seniorityLevels, setSeniorityLevels, roles, setRoles,
-    filters, setFilters,
+    filters, setFilters, locked, setLocked,
     selectedPersonId, setSelectedPersonId,
     chatOpen, setChatOpen,
     settingsOpen, setSettingsOpen,

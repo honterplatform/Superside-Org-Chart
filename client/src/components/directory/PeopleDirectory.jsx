@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { filterPeople } from '../../utils/filters';
-import { formatName, formatCurrency } from '../../utils/formatters';
+import { formatName, formatCurrency, getInitials } from '../../utils/formatters';
 import { StatusBadge } from '../shared/Badge';
 import AccountLogo from '../shared/AccountLogo';
 
@@ -96,7 +96,18 @@ export default function PeopleDirectory() {
                   style={styles.row}
                   onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                  <td style={{ ...styles.td, fontWeight: 500 }}>{formatName(person.name)}</td>
+                  <td style={{ ...styles.td, fontWeight: 500 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      {person.photoUrl ? (
+                        <img src={person.photoUrl} alt="" style={{ width: 30, height: 30, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+                      ) : (
+                        <div style={{ width: 30, height: 30, borderRadius: '50%', background: '#E8DFC0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#8B7D3C', flexShrink: 0 }}>
+                          {getInitials(person.name)}
+                        </div>
+                      )}
+                      {formatName(person.name)}
+                    </div>
+                  </td>
                   <td style={styles.td}>{person.title}</td>
                   <td style={styles.td}>{person.seniority}</td>
                   <td style={styles.td}>{person.region}</td>
@@ -136,7 +147,7 @@ const styles = {
   },
   count: { fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' },
   exportBtn: {
-    padding: '6px 12px', borderRadius: 'var(--radius-sm)',
+    padding: '6px 12px', borderRadius: 9999,
     border: '1px solid var(--border)', fontSize: 12, fontWeight: 500, cursor: 'pointer'
   },
   tableWrap: { flex: 1, overflow: 'auto' },
@@ -154,7 +165,7 @@ const styles = {
     padding: '12px', borderTop: '1px solid var(--border)'
   },
   pageBtn: {
-    padding: '6px 12px', borderRadius: 'var(--radius-sm)',
+    padding: '6px 12px', borderRadius: 9999,
     border: '1px solid var(--border)', fontSize: 12, cursor: 'pointer'
   }
 };

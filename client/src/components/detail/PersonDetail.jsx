@@ -62,11 +62,11 @@ export default function PersonDetail() {
               {person.photoUrl ? (
                 <img src={person.photoUrl} alt="" style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover' }} />
               ) : (
-                <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#E8E0F0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 700, color: '#6B5CE7' }}>
+                <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#E8E0F0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 700, color: '#3B7567' }}>
                   {formatName(person.name).split(' ').map(p => p[0]).join('').slice(0, 2)}
                 </div>
               )}
-              <label style={{ position: 'absolute', bottom: -2, right: -2, width: 22, height: 22, borderRadius: '50%', background: 'var(--accent)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12, boxShadow: 'var(--shadow-sm)' }}>
+              <label style={{ position: 'absolute', bottom: -2, right: -2, width: 22, height: 22, borderRadius: '50%', background: 'var(--accent)', color: '#0A211F', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12, boxShadow: 'var(--shadow-sm)' }}>
                 +
                 <input type="file" accept="image/*" style={{ display: 'none' }} onChange={async (e) => {
                   const file = e.target.files?.[0];
@@ -267,26 +267,30 @@ const styles = {
   section: { marginTop: 20 },
   sectionLabel: { display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6 },
   select: {
-    padding: '6px 10px', borderRadius: 'var(--radius-sm)',
-    border: '1px solid var(--border)', fontSize: 13, background: 'white'
+    padding: '6px 28px 6px 10px', borderRadius: 9999,
+    border: '1px solid var(--border)', fontSize: 13, background: 'white',
+    appearance: 'none',
+    backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 8px center'
   },
   input: {
-    width: '100%', padding: '8px 10px', borderRadius: 'var(--radius-sm)',
+    width: '100%', padding: '8px 10px', borderRadius: 9999,
     border: '1px solid var(--border)', fontSize: 13
   },
   reportItem: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '8px 10px', borderRadius: 'var(--radius-sm)',
+    padding: '8px 10px', borderRadius: 9999,
     cursor: 'pointer', marginBottom: 4, fontSize: 13,
     background: 'var(--bg)'
   },
   deleteBtn: {
-    padding: '8px 16px', borderRadius: 'var(--radius-sm)',
+    padding: '8px 16px', borderRadius: 9999,
     border: '1px solid var(--red)', color: 'var(--red)',
     fontSize: 13, fontWeight: 500, cursor: 'pointer'
   },
   cancelBtn: {
-    padding: '8px 16px', borderRadius: 'var(--radius-sm)',
+    padding: '8px 16px', borderRadius: 9999,
     border: '1px solid var(--border)', fontSize: 13, cursor: 'pointer'
   }
 };

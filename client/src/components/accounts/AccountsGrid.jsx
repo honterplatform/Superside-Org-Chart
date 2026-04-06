@@ -104,6 +104,6 @@ const styles = {
   statLabel: { fontSize: 11, color: 'var(--text-secondary)', fontWeight: 500 },
   statValue: { fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-heading)' },
   filters: { display: 'flex', gap: 8, marginBottom: 16 },
-  select: { padding: '6px 10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', fontSize: 12 },
+  select: { padding: '6px 10px', borderRadius: 9999, border: '1px solid var(--border)', fontSize: 12 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }
 };

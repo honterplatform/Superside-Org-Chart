@@ -67,7 +67,7 @@ const styles = {
   },
   error: { color: 'var(--red)', fontSize: 13 },
   button: {
-    padding: '12px', background: 'var(--accent)', color: 'white',
+    padding: '12px', background: 'var(--accent)', color: '#0A211F',
     borderRadius: 'var(--radius-md)', fontWeight: 600, fontSize: 15,
     cursor: 'pointer', border: 'none',
     opacity: 1, transition: 'opacity 0.2s'

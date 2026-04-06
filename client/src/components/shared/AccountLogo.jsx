@@ -8,7 +8,7 @@ export default function AccountLogo({ account, size = 28 }) {
     return (
       <div style={{
         width: size, height: size, borderRadius: '50%', overflow: 'hidden',
-        flexShrink: 0,
+        flexShrink: 0, border: '1px solid #F4F5F4',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         background: 'transparent'
       }}
@@ -34,7 +34,7 @@ export default function AccountLogo({ account, size = 28 }) {
 
   return (
     <div style={{
-      width: size, height: size, borderRadius: '50%', flexShrink: 0,
+      width: size, height: size, borderRadius: '50%', flexShrink: 0, border: '1px solid #F4F5F4',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       background: account.color || '#666', color: 'white',
       fontSize: size * 0.35, fontWeight: 700

@@ -57,13 +57,13 @@ export default function FreelancePoolEditor({ personId }) {
 const styles = {
   member: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '6px 10px', background: 'var(--bg)', borderRadius: 'var(--radius-sm)',
+    padding: '6px 10px', background: 'var(--bg)', borderRadius: 9999,
     marginBottom: 4, fontSize: 13
   },
   specialty: { fontSize: 11, color: 'var(--text-secondary)', fontWeight: 500 },
   removeBtn: { color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 16 },
   addBtn: {
-    marginTop: 6, padding: '6px 12px', borderRadius: 'var(--radius-sm)',
+    marginTop: 6, padding: '6px 12px', borderRadius: 9999,
     border: '1px dashed var(--border)', color: 'var(--accent)',
     fontSize: 12, cursor: 'pointer', width: '100%'
   }
