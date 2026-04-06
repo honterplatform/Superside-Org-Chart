@@ -1,4 +1,4 @@
-require('dotenv').config();
+try { require('dotenv').config(); } catch {};
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -59,7 +59,7 @@ const PORT = process.env.PORT || 3001;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/spark-org-chart')
   .then(() => {
     console.log('Connected to MongoDB');
-    server.listen(PORT, () => {
+    server.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
