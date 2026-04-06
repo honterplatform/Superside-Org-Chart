@@ -4,11 +4,12 @@ export default function Badge({ label, color = '#666', bg, small = false }) {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 4,
-      padding: small ? '1px 6px' : '2px 8px',
-      borderRadius: 12, fontSize: small ? 10 : 11,
-      fontWeight: 600, whiteSpace: 'nowrap',
+      padding: small ? '0px 5px' : '2px 8px',
+      borderRadius: 9999, fontSize: small ? 7 : 11,
+      fontWeight: 700, whiteSpace: 'nowrap',
       color: color, background: bg || `${color}18`,
-      lineHeight: small ? '16px' : '18px'
+      lineHeight: small ? '13px' : '18px',
+      letterSpacing: 0.3
     }}>
       {label}
     </span>

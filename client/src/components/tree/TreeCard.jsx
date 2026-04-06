@@ -63,15 +63,13 @@ export default React.memo(function TreeCard({
         }}>
           {node.title || (isManager ? 'Manager' : 'IC')}
         </span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <StatusBadge status={node.status} />
-          <span style={{
-            fontSize: 9, fontWeight: 700, color: isManager ? '#F9FBF7' : 'var(--text-secondary)',
-            textTransform: 'uppercase', letterSpacing: 0.5
-          }}>
-            {node.seniority?.toUpperCase()}
-          </span>
-        </div>
+        <StatusBadge status={node.status} />
+        <span style={{
+          fontSize: 9, fontWeight: 700, color: isManager ? '#F9FBF7' : 'var(--text-secondary)',
+          textTransform: 'uppercase', letterSpacing: 0.5
+        }}>
+          {node.seniority?.toUpperCase()}
+        </span>
       </div>
 
       {/* Profile photo */}
