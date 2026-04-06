@@ -1,4 +1,5 @@
-try { require('dotenv').config(); } catch {};
+try { require('dotenv').config({ path: require('path').join(__dirname, '.env') }); } catch {}
+console.log('Starting server... PORT=' + process.env.PORT + ' MONGODB_URI=' + (process.env.MONGODB_URI ? 'set' : 'NOT SET'));
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
