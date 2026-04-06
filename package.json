@@ -1,0 +1,14 @@
+{
+  "name": "spark-org-chart",
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm run build",
+    "start": "cd server && node server.js",
+    "seed": "cd server && node seed/index.js",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

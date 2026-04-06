@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
@@ -37,6 +38,14 @@ app.use('/api/roles', require('./routes/roles'));
 app.use('/api/freelance-pools', require('./routes/freelancePools'));
 app.use('/api/activity', require('./routes/activity'));
 app.use('/api/chat', require('./routes/chat'));
+
+// Serve built client in production
+const clientDist = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(clientDist));
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/socket.io')) return next();
+  res.sendFile(path.join(clientDist, 'index.html'));
+});
 
 // Error handler
 app.use(require('./middleware/errorHandler'));
