@@ -1,8 +1,19 @@
 const router = require('express').Router();
+const path = require('path');
+const multer = require('multer');
 const Person = require('../models/Person');
 const Assignment = require('../models/Assignment');
 const auth = require('../middleware/auth');
 const { logActivity } = require('../services/activityLogger');
+
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '..', 'uploads', 'photos'),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname) || '.jpg';
+    cb(null, req.params.id + ext);
+  }
+});
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
 // GET /api/people - List all with filters
 router.get('/', auth, async (req, res, next) => {
@@ -183,6 +194,18 @@ router.get('/:id/assignments', auth, async (req, res, next) => {
       .populate('accountId')
       .sort({ order: 1 });
     res.json(assignments);
+  } catch (err) { next(err); }
+});
+
+// POST /api/people/:id/photo - Upload profile photo
+router.post('/:id/photo', auth, upload.single('photo'), async (req, res, next) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const photoUrl = `/uploads/photos/${req.file.filename}`;
+    const person = await Person.findByIdAndUpdate(req.params.id, { photoUrl }, { new: true });
+    if (!person) return res.status(404).json({ error: 'Person not found' });
+    req.app.get('io').emit('person:updated', person);
+    res.json({ photoUrl });
   } catch (err) { next(err); }
 });
 

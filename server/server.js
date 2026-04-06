@@ -27,6 +27,9 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '10mb' }));
 
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/people', require('./routes/people'));

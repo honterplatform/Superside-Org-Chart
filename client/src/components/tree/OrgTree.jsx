@@ -309,7 +309,10 @@ export default function OrgTree() {
         setDragNodeId(dr.nodeId);
       }
       if (didDragRef.current) {
-        setLocalOffsets(prev => ({ ...prev, [dr.nodeId]: { x: dr.origX + dx, y: dr.origY + dy } }));
+        const GRID = 20;
+        const snappedX = Math.round((dr.origX + dx) / GRID) * GRID;
+        const snappedY = Math.round((dr.origY + dy) / GRID) * GRID;
+        setLocalOffsets(prev => ({ ...prev, [dr.nodeId]: { x: snappedX, y: snappedY } }));
       }
     }
   }, [zoom, connectMode, connectSource, screenToTree]);
@@ -424,14 +427,10 @@ export default function OrgTree() {
       <div style={{
         transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
         transformOrigin: '0 0', position: 'absolute',
-        minWidth: 2000, minHeight: 2000,
-        width: Math.max(treeData.width, 2000), height: Math.max(treeData.height, 2000),
-        cursor: connectMode ? 'crosshair' : (modeRef.current === 'panning' ? 'grabbing' : 'grab')
+        minWidth: 4000, minHeight: 4000,
+        width: Math.max(treeData.width, 4000), height: Math.max(treeData.height, 4000),
+        cursor: connectMode ? 'crosshair' : (modeRef.current === 'panning' ? 'grabbing' : 'grab'),
       }}>
-        {/* Debug: node count */}
-        <div style={{position:'absolute',top:0,left:0,background:'red',color:'white',padding:'4px 8px',fontSize:11,zIndex:99,borderRadius:4}}>
-          {treeData.nodes.filter(n=>!n.virtual).length} nodes | zoom:{zoom.toFixed(2)} | pan:{Math.round(pan.x)},{Math.round(pan.y)} | size:{Math.round(treeData.width)}x{Math.round(treeData.height)}
-        </div>
         <TreeLines edges={treeData.edges} nodePositions={nodePositions} personMap={personMap} />
 
         {/* Live connect line */}
@@ -546,6 +545,8 @@ const styles = {
   container: {
     width: '100%', height: '100%', overflow: 'hidden',
     position: 'relative', background: 'var(--bg)',
+    backgroundImage: 'radial-gradient(circle, #d0d0d0 1px, transparent 1px)',
+    backgroundSize: '20px 20px',
     userSelect: 'none'
   },
   controls: {

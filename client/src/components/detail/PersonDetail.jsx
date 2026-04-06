@@ -56,9 +56,36 @@ export default function PersonDetail() {
         </div>
 
         <div style={styles.body}>
-          {/* Name */}
-          <EditableField value={person.name} onSave={v => handleSave('name', v)}
-            renderDisplay={v => <h2 style={styles.name}>{formatName(v)}</h2>} />
+          {/* Profile Photo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12 }}>
+            <div style={{ position: 'relative' }}>
+              {person.photoUrl ? (
+                <img src={person.photoUrl} alt="" style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover' }} />
+              ) : (
+                <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#E8E0F0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 700, color: '#6B5CE7' }}>
+                  {formatName(person.name).split(' ').map(p => p[0]).join('').slice(0, 2)}
+                </div>
+              )}
+              <label style={{ position: 'absolute', bottom: -2, right: -2, width: 22, height: 22, borderRadius: '50%', background: 'var(--accent)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12, boxShadow: 'var(--shadow-sm)' }}>
+                +
+                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const form = new FormData();
+                  form.append('photo', file);
+                  try {
+                    await api.post(`/api/people/${person._id}/photo`, form, { headers: { 'Content-Type': 'multipart/form-data' } });
+                    loadPerson();
+                    fetchAll();
+                  } catch { alert('Failed to upload photo'); }
+                }} />
+              </label>
+            </div>
+            <div style={{ flex: 1 }}>
+              <EditableField value={person.name} onSave={v => handleSave('name', v)}
+                renderDisplay={v => <h2 style={styles.name}>{formatName(v)}</h2>} />
+            </div>
+          </div>
 
           {/* Role (optional) */}
           <div style={styles.section}>

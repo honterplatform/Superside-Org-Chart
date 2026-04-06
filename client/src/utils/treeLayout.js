@@ -1,8 +1,8 @@
 // Reingold-Tilford style tree layout algorithm
-const CARD_W = 220;
-const CARD_H = 120;
+const CARD_W = 180;
+const CARD_H = 250;
 const GAP_X = 40;
-const GAP_Y = 100;
+const GAP_Y = 60;
 
 // Extract a raw ID string from a value that may be a string, ObjectId, or populated object
 function toId(val) {

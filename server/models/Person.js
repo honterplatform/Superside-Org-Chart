@@ -13,6 +13,7 @@ const personSchema = new mongoose.Schema({
   statusNote: { type: String, default: '' },
   notes: { type: String, default: '' },
   type: { type: String, enum: ['employee', 'freelancer', 'planned_role'], default: 'employee' },
+  photoUrl: { type: String, default: '' },
   order: { type: Number, default: 0 },
   posX: { type: Number, default: null },
   posY: { type: Number, default: null }

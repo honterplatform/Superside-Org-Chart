@@ -8,16 +8,16 @@ export default function AccountLogo({ account, size = 28 }) {
     return (
       <div style={{
         width: size, height: size, borderRadius: '50%', overflow: 'hidden',
-        border: '1px solid var(--border-light)', flexShrink: 0,
+        flexShrink: 0,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'white'
+        background: 'transparent'
       }}
         title={account.name}
       >
         <img
           src={account.logoUrl}
           alt={account.name}
-          style={{ width: size - 4, height: size - 4, objectFit: 'contain' }}
+          style={{ width: size, height: size, objectFit: 'contain' }}
           onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
         />
         <div style={{
