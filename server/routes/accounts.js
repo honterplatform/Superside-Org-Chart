@@ -1,8 +1,11 @@
 const router = require('express').Router();
+const multer = require('multer');
 const Account = require('../models/Account');
 const Assignment = require('../models/Assignment');
 const auth = require('../middleware/auth');
 const { logActivity } = require('../services/activityLogger');
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 2 * 1024 * 1024 } });
 
 router.get('/', auth, async (req, res, next) => {
   try {
@@ -58,6 +61,18 @@ router.delete('/:id', auth, async (req, res, next) => {
     await logActivity('deleted_account', 'account', account._id, { before: account });
     req.app.get('io').emit('account:deleted', { _id: req.params.id });
     res.json({ success: true });
+  } catch (err) { next(err); }
+});
+
+// POST /api/accounts/:id/logo - Upload logo as base64
+router.post('/:id/logo', auth, upload.single('logo'), async (req, res, next) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const base64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    const account = await Account.findByIdAndUpdate(req.params.id, { logoUrl: base64 }, { new: true });
+    if (!account) return res.status(404).json({ error: 'Account not found' });
+    req.app.get('io').emit('account:updated', account);
+    res.json({ logoUrl: base64 });
   } catch (err) { next(err); }
 });
 

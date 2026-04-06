@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { formatCurrency } from '../../utils/formatters';
+import { formatCurrency, getInitials } from '../../utils/formatters';
+import AccountLogo from '../shared/AccountLogo';
 import api from '../../services/api';
 
 const emptyForm = { name: '', teamName: '', externalId: '', mrr: 0, region: 'AMERICAS', businessUnit: '', logoUrl: '', color: '#666666' };
@@ -28,6 +29,17 @@ export default function AccountManager() {
     } catch { alert('Failed to save'); }
   };
 
+  const handleLogoUpload = async (file, accountId) => {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('logo', file);
+    try {
+      const { data } = await api.post(`/api/accounts/${accountId}/logo`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      setForm(f => ({ ...f, logoUrl: data.logoUrl }));
+      await fetchAll();
+    } catch { alert('Failed to upload logo'); }
+  };
+
   const handleDelete = async (id) => {
     if (!confirm('Delete this account and all its assignments?')) return;
     await api.delete(`/api/accounts/${id}`);
@@ -38,6 +50,25 @@ export default function AccountManager() {
 
   const FormFields = ({ id }) => (
     <div style={s.form}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
+        {/* Logo preview + upload */}
+        <div style={{ position: 'relative' }}>
+          {form.logoUrl ? (
+            <img src={form.logoUrl} alt="" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'contain', background: '#f5f5f5' }} />
+          ) : (
+            <div style={{ width: 40, height: 40, borderRadius: '50%', background: form.color || '#666', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 14, fontWeight: 700 }}>
+              {form.name ? getInitials(form.name) : '?'}
+            </div>
+          )}
+          {id && (
+            <label style={{ position: 'absolute', bottom: -4, right: -4, width: 18, height: 18, borderRadius: '50%', background: 'var(--accent)', color: '#0A211F', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 10, fontWeight: 700 }}>
+              +
+              <input type="file" accept=".svg,image/svg+xml,image/png,image/jpeg" style={{ display: 'none' }} onChange={e => handleLogoUpload(e.target.files?.[0], id)} />
+            </label>
+          )}
+        </div>
+        <div style={{ flex: 1, fontSize: 14, fontWeight: 600 }}>{form.name || 'New Account'}</div>
+      </div>
       <div style={s.formRow}>
         <input placeholder="Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} style={s.input} />
         <input placeholder="Team Name" value={form.teamName} onChange={e => setForm(f => ({ ...f, teamName: e.target.value }))} style={s.input} />
@@ -51,7 +82,6 @@ export default function AccountManager() {
       </div>
       <div style={s.formRow}>
         <input placeholder="External ID" value={form.externalId} onChange={e => setForm(f => ({ ...f, externalId: e.target.value }))} style={s.input} />
-        <input placeholder="Logo URL (e.g. /logos/name.svg)" value={form.logoUrl} onChange={e => setForm(f => ({ ...f, logoUrl: e.target.value }))} style={{ ...s.input, flex: 2 }} />
         <input type="color" value={form.color} onChange={e => setForm(f => ({ ...f, color: e.target.value }))} style={{ width: 36, height: 32, padding: 2, border: '1px solid var(--border)', borderRadius: 9999, cursor: 'pointer' }} />
       </div>
       <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
@@ -72,12 +102,12 @@ export default function AccountManager() {
         <div key={a._id}>
           {editing === a._id ? <FormFields id={a._id} /> : (
             <div style={s.row}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-                <div style={{ width: 8, height: 8, borderRadius: '50%', background: a.color || '#666', flexShrink: 0 }} />
-                <span style={{ fontWeight: 500 }}>{a.name}</span>
-                <span style={{ color: 'var(--text-secondary)', fontSize: 11 }}>— {a.teamName}</span>
-                <span style={{ color: 'var(--text-secondary)', fontSize: 11 }}>{formatCurrency(a.mrr)}</span>
-                <span style={{ color: 'var(--text-light)', fontSize: 11 }}>{a.region}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
+                <AccountLogo account={a} size={28} />
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontWeight: 500, fontSize: 13 }}>{a.name}</div>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: 11 }}>{a.teamName} · {formatCurrency(a.mrr)} · {a.region}</div>
+                </div>
               </div>
               <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
                 <button onClick={() => startEdit(a)} style={s.editBtn}>Edit</button>

@@ -30,7 +30,7 @@ export default function SettingsModal() {
               padding: '6px 14px', borderRadius: 9999,
               fontSize: 13, fontWeight: 500, cursor: 'pointer',
               background: activeTab === tab.id ? 'var(--accent)' : 'transparent',
-              color: activeTab === tab.id ? 'white' : 'var(--text-secondary)',
+              color: activeTab === tab.id ? '#0A211F' : 'var(--text-secondary)',
               border: activeTab === tab.id ? 'none' : '1px solid var(--border)'
             }}>
             {tab.label}
