@@ -26,9 +26,9 @@ export default function FilterBar() {
   ];
 
   return (
-    <div style={styles.bar}>
+    <div className="filter-bar" style={styles.bar}>
       {/* View tabs */}
-      <div style={styles.tabs}>
+      <div className="filter-tabs" style={styles.tabs}>
         {tabs.map(tab => (
           <button key={tab.id} onClick={() => setView(tab.id)}
             style={{ ...styles.tab, ...(view === tab.id ? styles.tabActive : {}) }}>
@@ -63,7 +63,7 @@ export default function FilterBar() {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
           </svg>
-          Filter{activeCount > 0 && ` (${activeCount})`}
+          <span className="filter-text">Filter</span>{activeCount > 0 && ` (${activeCount})`}
         </button>
 
         {open && (

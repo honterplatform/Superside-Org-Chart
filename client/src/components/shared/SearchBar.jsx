@@ -41,7 +41,7 @@ export default function SearchBar({ compact = false }) {
   };
 
   return (
-    <div ref={ref} style={{ position: 'relative', width: compact ? 200 : 300 }}>
+    <div ref={ref} style={{ position: 'relative', width: '100%', maxWidth: 300 }}>
       <input
         type="text"
         placeholder="Search people, accounts..."

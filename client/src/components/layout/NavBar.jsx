@@ -20,27 +20,21 @@ export default function NavBar() {
     }
   };
 
-  const tabs = [
-    { id: 'tree', label: 'Tree', hideOnMobile: true },
-    { id: 'directory', label: 'Directory' },
-    { id: 'accounts', label: 'Accounts', hideOnMobile: true }
-  ];
-
   return (
     <>
-      <nav style={styles.nav}>
+      <nav className="nav-bar" style={styles.nav}>
         <div style={styles.left}>
           <img src="/logo.svg" alt="Logo" style={{ height: 24 }} />
-          <span style={styles.logo}>Spark Studio</span>
+          <span className="nav-logo-text" style={styles.logo}>Spark Studio</span>
         </div>
-        <div style={styles.center}>
+        <div className="nav-search-center" style={styles.center}>
           <SearchBar />
         </div>
         <div style={styles.right}>
-          <button onClick={() => setShowAddModal(true)} style={styles.addBtn}>+ Add</button>
+          <button onClick={() => setShowAddModal(true)} style={styles.addBtn}>+<span style={{ marginLeft: 4 }}>Add</span></button>
           <button onClick={() => setSettingsOpen(true)} style={styles.iconBtn} title="Settings">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
           </button>
         </div>
@@ -55,7 +49,7 @@ export default function NavBar() {
                 onChange={e => setNewPerson(p => ({ ...p, name: e.target.value }))} autoFocus />
               <input placeholder="Title" value={newPerson.title}
                 onChange={e => setNewPerson(p => ({ ...p, title: e.target.value }))} />
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <select value={newPerson.seniority} onChange={e => setNewPerson(p => ({ ...p, seniority: e.target.value }))}>
                   {['1b','1a','1.2','2a','2b','3a','3b','4a','4b','5a','5b','6a','6b','7a','7b','8a'].map(s =>
                     <option key={s} value={s}>{s}</option>)}
@@ -89,22 +83,16 @@ const styles = {
   nav: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
     padding: '0 20px', height: 52, background: '#0A211F', color: 'white',
-    flexShrink: 0, zIndex: 50, position: 'relative'
+    flexShrink: 0, zIndex: 50, position: 'relative', gap: 8
   },
-  left: { display: 'flex', alignItems: 'center', gap: 24 },
+  left: { display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 },
   center: { position: 'absolute', left: '50%', transform: 'translateX(-50%)' },
-  right: { display: 'flex', alignItems: 'center', gap: 8 },
+  right: { display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 },
   logo: { fontFamily: 'var(--font-heading)', fontSize: 16, fontWeight: 700 },
-  tabs: { display: 'flex', gap: 2 },
-  tab: {
-    padding: '6px 14px', borderRadius: 9999,
-    color: 'rgba(255,255,255,0.6)', fontSize: 13, fontWeight: 500,
-    transition: 'all 0.15s'
-  },
-  tabActive: { color: 'white', background: 'rgba(255,255,255,0.15)' },
   addBtn: {
     padding: '6px 14px', borderRadius: 9999,
-    background: 'var(--accent)', color: '#0A211F', fontSize: 13, fontWeight: 600
+    background: 'var(--accent)', color: '#0A211F', fontSize: 13, fontWeight: 600,
+    display: 'flex', alignItems: 'center'
   },
   iconBtn: {
     padding: 8, borderRadius: 9999, color: 'rgba(255,255,255,0.7)',

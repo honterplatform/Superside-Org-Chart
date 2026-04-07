@@ -115,6 +115,16 @@ input[type="text"]::placeholder {
 /* Mobile */
 @media (max-width: 768px) {
   .hide-mobile { display: none !important; }
+  .nav-logo-text { display: none !important; }
+  .nav-search-center { position: static !important; transform: none !important; flex: 1; margin: 0 8px; }
+  .nav-search-center input { width: 100% !important; }
+  .nav-add-btn span { display: none; }
+  .filter-bar { padding: 6px 10px !important; gap: 4px !important; }
+  .filter-bar .filter-text { display: none; }
+}
+@media (max-width: 480px) {
+  .nav-bar { padding: 0 10px !important; height: 46px !important; }
+  .filter-tabs button { padding: 4px 10px !important; font-size: 11px !important; }
 }
 @media (min-width: 769px) {
   .show-mobile-only { display: none !important; }
